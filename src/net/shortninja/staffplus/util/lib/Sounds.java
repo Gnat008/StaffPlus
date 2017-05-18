@@ -1,7 +1,6 @@
 package net.shortninja.staffplus.util.lib;
 
 import net.shortninja.staffplus.StaffPlus;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -210,7 +209,7 @@ public enum Sounds
     private String pre19sound;
     private String post19sound;
     private Sound resolvedSound = null;
-    
+
     Sounds(String pre19sound, String post19sound)
     {
         this.pre19sound = pre19sound;
@@ -218,55 +217,55 @@ public enum Sounds
     }
 
     /**
-     * Resolves the sound into a valid enum, which is either the pre 1.9 version 
+     * Resolves the sound into a valid enum, which is either the pre 1.9 version
      * or the post 1.9 version.
-     * 
+     *
      * @return The resolved Sound.
      */
     public Sound get()
     {
-        if(resolvedSound != null)
+        if (resolvedSound != null)
         {
-        	return resolvedSound;
+            return resolvedSound;
         }
-        
+
         try
         {
             return resolvedSound = Sound.valueOf(post19sound);
-        }catch(IllegalArgumentException exception)
+        } catch (IllegalArgumentException exception)
         {
             return resolvedSound = Sound.valueOf(pre19sound);
         }
     }
-    
+
     /**
      * Plays the sound with player#playSound.
-     * 
+     *
      * @param player The player to play the sound for.
      */
     public void play(Player player)
     {
-    	if(player == null)
-    	{
-    		return;
-    	}
-    	
-    	player.playSound(player.getLocation(), get(), 1, 0);
+        if (player == null)
+        {
+            return;
+        }
+
+        player.playSound(player.getLocation(), get(), 1, 0);
     }
-    
+
     /**
      * Plays the sound for players with the permission.
-     * 
+     *
      * @param permission The permission a player must have to hear the sound.
      */
     public void playForGroup(String permission)
     {
-    	for(Player player : Bukkit.getOnlinePlayers())
-    	{
-    		if(StaffPlus.get().permission.has(player, permission))
-    		{
-    			play(player);
-    		}
-    	}
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (StaffPlus.get().permission.has(player, permission))
+            {
+                play(player);
+            }
+        }
     }
 }

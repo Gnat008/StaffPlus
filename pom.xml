@@ -1,102 +1,185 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.shortninja.staffplus</groupId>
-  <artifactId>StaffPlus</artifactId>
-  <version>3.2.2-RELEASE</version>
-  <name>Staff+</name>
-  <description>The ultimate moderation plugin.</description>
-  <repositories>
-	<repository>
-		<id>inventive-repo</id>
-		<url>https://repo.inventivetalent.org/content/groups/public/</url>
-	</repository>
-  </repositories>
-  <dependencies>
-    <dependency>
-	  <groupId>org.inventivetalent</groupId>
-	  <artifactId>apimanager</artifactId>
-	  <version>1.0.2</version>
-	  <exclusions>
-	  	<exclusion>
-	  		<artifactId>bukkit</artifactId>
-	  		<groupId>org.bukkit</groupId>
-	  	</exclusion>
-	  	<exclusion>
-	  		<artifactId>craftbukkit</artifactId>
-	  		<groupId>org.bukkit</groupId>
-	  	</exclusion>
-	  </exclusions>
-    </dependency>
-    <dependency>
-	  <groupId>org.inventivetalent.packetlistener</groupId>
-	  <artifactId>api</artifactId>
-	  <version>3.4.4</version>
-    </dependency>
-    <dependency>
-	  <groupId>org.inventivetalent.packetlistener</groupId>
-	  <artifactId>1_7</artifactId>
-	  <version>3.4.4</version>
-	  <exclusions>
-	  	<exclusion>
-	  		<artifactId>craftbukkit</artifactId>
-	  		<groupId>org.bukkit</groupId>
-	  	</exclusion>
-	  </exclusions>
-    </dependency>
-    <dependency>
-	  <groupId>org.inventivetalent.packetlistener</groupId>
-	  <artifactId>1_8</artifactId>
-	  <version>3.4.4</version>
-	  <exclusions>
-	  	<exclusion>
-	  		<artifactId>craftbukkit</artifactId>
-	  		<groupId>org.bukkit</groupId>
-	  	</exclusion>
-	  </exclusions>
-    </dependency>
-  </dependencies>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-shade-plugin</artifactId>
-      	<version>2.4.3</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <finalName>Staff+</finalName>
-              <outputDirectory>/Users/Gavin/Desktop</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-    <resources>
-      <resource>
-        <directory>resources</directory>
-        <includes>
-		  <include>changelog.txt</include>
-          <include>config.yml</include>
-		  <include>data.yml</include>
-          <include>license.txt</include>
-          <include>plugin.yml</include>
-          <include>lang/**/*.*</include>
-        </includes>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-  </build>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.shortninja.staffplus</groupId>
+    <artifactId>StaffPlus</artifactId>
+    <version>3.2.2-RELEASE</version>
+
+    <name>Staff+</name>
+    <description>The ultimate moderation plugin.</description>
+
+    <properties>
+        <!-- Project properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.jdkVersion>1.8</project.jdkVersion>
+
+        <!-- Output properties -->
+        <project.outputName>StaffPlus</project.outputName>
+        <project.buildNumber>CUSTOM</project.buildNumber>
+        <project.versionCode>${project.version}-b${project.buildNumber}</project.versionCode>
+        <project.finalName>${project.outputName}-${project.version}</project.finalName>
+
+        <!-- BukkitPlugin properties -->
+        <bukkitplugin.name>${project.outputName}</bukkitplugin.name>
+        <bukkitplugin.main>${project.groupId}.${project.artifactId}.${bukkitplugin.name}</bukkitplugin.main>
+        <bukkitplugin.authors>ShortNinja</bukkitplugin.authors>
+
+        <!-- Change Bukkit Version HERE! -->
+        <bukkit.version>1.11-R0.1-SNAPSHOT</bukkit.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+
+        <repository>
+            <id>inventive-repo</id>
+            <url>https://repo.inventivetalent.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Spigot -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${bukkit.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bungeecord-chat</artifactId>
+                    <groupId>net.md-5</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.inventivetalent</groupId>
+            <artifactId>apimanager</artifactId>
+            <version>1.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>craftbukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.inventivetalent.packetlistener</groupId>
+            <artifactId>api</artifactId>
+            <version>3.4.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.inventivetalent.packetlistener</groupId>
+            <artifactId>1_7</artifactId>
+            <version>3.4.4</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>craftbukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.inventivetalent.packetlistener</groupId>
+            <artifactId>1_8</artifactId>
+            <version>3.4.4</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>craftbukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+
+        <plugins>
+            <!-- Maven Java Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${project.jdkVersion}</source>
+                    <target>${project.jdkVersion}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <minimizeJar>true</minimizeJar>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Replacer -->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <file>target/classes/plugin.yml</file>
+                    <replacements>
+                        <replacement>
+                            <token>maven-version</token>
+                            <value>${project.version}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>resources</directory>
+                <includes>
+                    <include>changelog.txt</include>
+                    <include>config.yml</include>
+                    <include>data.yml</include>
+                    <include>license.txt</include>
+                    <include>plugin.yml</include>
+                    <include>lang/**/*.*</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>
